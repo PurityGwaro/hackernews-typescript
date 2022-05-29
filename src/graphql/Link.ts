@@ -1,5 +1,5 @@
 //defining the link type using the objectType Nexus library
-import { extendType, objectType, nonNull, stringArg } from "nexus";
+import { extendType, objectType, nonNull, stringArg, intArg } from "nexus";
 import { NexusGenObjects } from "../../nexus-typegen";
 //objectType is used to create a new type in the gql schema
 
