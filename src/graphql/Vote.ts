@@ -24,25 +24,25 @@ export const VoteMutation = extendType({
 
                 if (!userId) {
                     throw new Error("Cannot vote without logging in.");
-                    const link = await context.prisma.link.update({
-                        where: {
-                            id: linkId
-                        },
-                        data: {
-                            voters: {
-                                connect: {
-                                    id: userId
-                                }
+                }
+                const link = await context.prisma.link.update({
+                    where: {
+                        id: linkId
+                    },
+                    data: {
+                        voters: {
+                            connect: {
+                                id: userId
                             }
                         }
-                    })
-                    const user = await context.prisma.user.findUnique({ where: { id: userId } });
-
-                    return {
-                        link,
-                        user: user as User
-                    };
-                }
+                    }
+                })
+                const user = await context.prisma.user.findUnique({ where: { id: userId } });
+                return {
+                    link,
+                    user: user as User
+                };
+                
             }
         });
     },
