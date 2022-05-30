@@ -1,5 +1,6 @@
 import { ApolloServer } from "apollo-server";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import { context } from "./context";
 
 
 import { schema } from "./schema";
@@ -7,6 +8,7 @@ import { schema } from "./schema";
 export const server = new ApolloServer({
     schema,
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+    context,
 });
 
 const port = 4500;

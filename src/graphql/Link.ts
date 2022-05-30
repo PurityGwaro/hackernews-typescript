@@ -1,5 +1,5 @@
 //defining the link type using the objectType Nexus library
-import { extendType, objectType, nonNull, stringArg, intArg } from "nexus";
+import { extendType, objectType, nonNull, stringArg } from "nexus";
 import { NexusGenObjects } from "../../nexus-typegen";
 //objectType is used to create a new type in the gql schema
 
@@ -14,20 +14,6 @@ export const Link = objectType({
     },
 });
 
-//dummy data for links of type Link
-let links: NexusGenObjects["Link"][]=[
-    {
-        id: 1,
-        url: "www.howtographql.com",
-        description: "Fullstack tutorial for graphQL",
-    },
-    {
-        id: 2,
-        url: "graphql.org",
-        description: "GrapgQL official website",
-    },
-];
-
 
 //code for field feed of type Link, returns an object of links
 export const LinkQuery = extendType({
@@ -36,7 +22,7 @@ export const LinkQuery = extendType({
         t.nonNull.list.nonNull.field("feed",{
             type: "Link",
             resolve(parents, args, context, info){
-                return links;
+                return context.prisma.link.findMany();
             },
         });
     },
@@ -53,15 +39,13 @@ export const LinkMutation = extendType({
                 url: nonNull(stringArg()),
             },
             resolve(parent, args, context) {
-                const { description, url } = args;
-                let idCount = links.length + 1;
-                const link = {
-                    id: idCount,
-                    description: description,
-                    url: url,
-                };
-                links.push(link);
-                return link;
+                const newLink = context.prisma.link.create({
+                    data: {
+                        description:args.description,
+                        url:args.url,
+                    }
+                })
+                return newLink;
             },
         });
     },
