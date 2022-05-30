@@ -11,6 +11,14 @@ export const Link = objectType({
         t.nonNull.int("id");//field id of type Int
         t.nonNull.string("description");//field description of type string
         t.nonNull.string("url");//field url of type string
+        t.field("postedBy",{
+            type: "User",
+            resolve(parent, args, context) {
+                return context.prisma.link
+                    .findUnique({ where: { id: parent.id } })
+                    .postedBy();
+            }
+        })
     },
 });
 
